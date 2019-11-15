@@ -21,7 +21,7 @@ RUN python3.7 get-pip.py && rm get-pip.py
 
 # Source installation of cloudmesh for developers
 RUN pip install cloudmesh-installer
-RUN mkdir cm && cd cm && cloudmesh-installer bundels
+RUN mkdir cm && cd cm && cloudmesh-installer bundles
 RUN cloudmesh-installer git clone cloud && cloudmesh-installer install cloud -e
 RUN cms help && cd ..
 
