@@ -16,7 +16,7 @@ RUN . ~/ENV3/bin/activate
 
 # install the pip for the virtual environment
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-RUN python get-pip.py && rm get-pip.py
+RUN python3.7 get-pip.py && rm get-pip.py
 
 # Source installation of cloudmesh for developers
 RUN pip install cloudmesh-installer
