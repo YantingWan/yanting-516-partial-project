@@ -12,7 +12,7 @@ RUN apt-get install -y python3.7 python3-dev python3.7-dev
 
 # CREATE and activate a new virtual environment
 RUN python3.7 -m venv --without-pip ~/ENV3
-RUN source ~/ENV3/bin/activate
+RUN . ~/ENV3/bin/activate
 
 # install the pip for the virtual environment
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
