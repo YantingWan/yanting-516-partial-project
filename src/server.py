@@ -2,13 +2,13 @@ from flask import jsonify
 import connexion
 from cloudmesh.common.StopWatch import StopWatch
 from time import sleep
+import sys
 
 # Create the application instance
 app = connexion.App(__name__, specification_dir="./")
 
 # Read the yaml file to configure the endpoints
 app.add_api("api.yaml")
-
 
 # create a URL route in our application for "/"
 @app.route("/")
@@ -21,4 +21,4 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=8000, debug=True)
+    app.run(host='0.0.0.0', port=8000,debug=False)
