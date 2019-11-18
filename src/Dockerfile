@@ -5,6 +5,7 @@ RUN set -x \
         && apt-get -y upgrade \
         && apt-get -y --no-install-recommends install build-essential \
                                                       git \
+                                                      openssl \
                                                       curl \
                                                       wget \
                                                       sudo \
