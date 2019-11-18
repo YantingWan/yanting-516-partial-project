@@ -1,30 +1,27 @@
-# Use an official Ubuntu 18.04 as a parent image
-FROM ubuntu:18.04
+FROM ubuntu:19.04
 
-# install python3.7
-RUN apt-get -y update && apt-get install -y \
-    software-properties-common \
-	openssl \
-	curl \
-	git
-	
-RUN add-apt-repository ppa:deadsnakes/ppa
-RUN apt-get install -y python3.7 python3-dev python3.7-dev
+RUN set -x \
+        && apt-get -y update \
+        && apt-get -y upgrade \
+        && apt-get -y --no-install-recommends install build-essential \
+                                                      git \
+                                                      curl \
+                                                      wget \
+                                                      sudo \
+        && apt-get -y install python3 \
+                              python3-pip \ 
+        && rm -rf /var/lib/apt/lists/* \
+        && update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
+        && update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1 \
+        && pip install cloudmesh-installer
 
-# CREATE and activate a new virtual environment
-RUN python3.7 -m venv --without-pip ~/ENV3
-RUN . ~/ENV3/bin/activate
+RUN mkdir cm
+WORKDIR cm
 
-# install the pip for the virtual environment
-RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-RUN python3.7 get-pip.py && rm get-pip.py
+RUN cloudmesh-installer git clone cloud
+RUN cloudmesh-installer install cloud -e
 
-# Source installation of cloudmesh for developers
-RUN pip install cloudmesh-installer
-RUN mkdir cm && cd cm && cloudmesh-installer bundles
-RUN cloudmesh-installer git clone cloud && cloudmesh-installer install cloud -e
-RUN cms help && cd ..
-
+# can dockerize python app after this line
 # Set the working directory to /ai_services on Docker
 WORKDIR /ai_services
 
@@ -38,4 +35,8 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 EXPOSE 8000
 
 # Run server.py when the container launches
-CMD ["python","server.py"]
+CMD ["python3","server.py"]
+
+# if cloudmesh directory is added to sys.path
+# what's the meaning(purpose) of this line (feels like exit)
+# CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
